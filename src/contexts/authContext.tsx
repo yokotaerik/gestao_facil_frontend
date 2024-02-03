@@ -1,6 +1,6 @@
-import { api } from "@/pages/api/api";
+import { api } from "@/api/api";
 import { AxiosError } from "axios";
-import { Router, useRouter } from "next/router";
+import Router from "next/router";
 import React, { ReactNode, createContext, useState } from "react";
 
 
@@ -38,8 +38,7 @@ type SignUpProps = {
 }
 
 
-const AuthContext = createContext({} as AuthContextData);
-const router = useRouter();
+export const AuthContext = createContext({} as AuthContextData);
 
 
 export function AuthProvider({children} : AuthProviderProps){
@@ -71,6 +70,9 @@ export function AuthProvider({children} : AuthProviderProps){
                 username,
                 email: data.email,
             });
+            
+
+            Router.push("/")
         }
         catch (error: AxiosError | any) {
             if (error.response) {
@@ -100,7 +102,7 @@ export function AuthProvider({children} : AuthProviderProps){
             );
 
             alert("Registrado com sucesso")
-            router.push("/login")
+            Router.push("/login")
         }
         catch (error: AxiosError | any) {
             if (error.response) {
@@ -119,7 +121,7 @@ export function AuthProvider({children} : AuthProviderProps){
     async function signOut(){
         try{
             api.defaults.headers['Authorization'] = null;
-            router.push("/login")
+            Router.push("/login")
         }
         catch{
             console.log("Erro ao deslogar")
