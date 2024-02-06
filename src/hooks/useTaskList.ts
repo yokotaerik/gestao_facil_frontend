@@ -1,27 +1,27 @@
 import { api } from "@/api/api";
 import { AxiosError } from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-type projectInfoDTO = {
+export type TaskInfo = {
   id: number;
   name: string;
-  progress: number;
+  description: string;
+  timeExpected: number;
+  priority: string;
+  status: string;
+  project: string;
 };
 
-const useProjectList = (endpoint: string): {
-  projects: projectInfoDTO[] | undefined;
-  error: string | null;
-  loading: boolean;
-} => {
-  const [projects, setProjects] = useState<projectInfoDTO[] | undefined>();
+const useTaskList = () => {
+  const [tasks, setTasks] = useState<TaskInfo[]>();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(endpoint);
-        setProjects(response.data);
+        const response = await api.get("/task/me");
+        setTasks(response.data);
       } catch (error: AxiosError | any) {
         if (error.response) {
           setError(error.response.data.message);
@@ -36,9 +36,9 @@ const useProjectList = (endpoint: string): {
     };
 
     fetchData();
-  }, [endpoint]); 
+  }, []);
 
-  return { projects, error, loading };
+  return { tasks, error, loading };
 };
 
-export default useProjectList;
+export default useTaskList;

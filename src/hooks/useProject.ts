@@ -1,27 +1,21 @@
 import { api } from "@/api/api";
+import { ProjectDataDTO } from "@/components/layout/ProjectCard";
 import { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 
-type projectInfoDTO = {
-  id: number;
-  name: string;
-  progress: number;
-};
-
-const useProjectList = (endpoint: string): {
-  projects: projectInfoDTO[] | undefined;
-  error: string | null;
-  loading: boolean;
-} => {
-  const [projects, setProjects] = useState<projectInfoDTO[] | undefined>();
+const useProject = (
+  id: number
+) => {
+  const [project, setProject] = useState<ProjectDataDTO | undefined>();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(endpoint);
-        setProjects(response.data);
+        const url = `project/${id}`;
+        const response = await api.get(url);
+        setProject(response.data);
       } catch (error: AxiosError | any) {
         if (error.response) {
           setError(error.response.data.message);
@@ -36,9 +30,9 @@ const useProjectList = (endpoint: string): {
     };
 
     fetchData();
-  }, [endpoint]); 
+  }, [id]);
 
-  return { projects, error, loading };
+  return { project, error, loading };
 };
 
-export default useProjectList;
+export default useProject;

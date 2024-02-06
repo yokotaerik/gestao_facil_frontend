@@ -1,6 +1,6 @@
 // components/RegisterForm.tsx
 import { useContext, useState } from "react";
-import Button from "../button";
+import Button from "../layout/button";
 import { AuthContext } from "@/contexts/authContext";
 import Link from "next/link";
 
