@@ -1,4 +1,5 @@
 import { api } from "@/api/api";
+import { UserProps } from "@/contexts/authContext";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
@@ -10,6 +11,7 @@ export type TaskInfo = {
   priority: string;
   status: string;
   project: string;
+  responsible: UserProps;
 };
 
 const useTaskList = () => {

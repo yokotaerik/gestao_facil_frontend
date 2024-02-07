@@ -12,11 +12,11 @@ const Layout = ({ children }: LayoutProps) => {
   const { user, signOut } = useContext(AuthContext);
 
   return (
-    <div className="flex flex-col min-h-screen font-sans bg-gray-100">
+    <div className="flex flex-col min-h-screen font-sans bg-gray-200">
       <Head>
         <title>Meu Site</title>
       </Head>
-      <nav className="bg-teal-500 text-white p-4">
+      <nav className="bg-blue-600 text-white p-4">
         <div className="flex justify-between items-center">
           <div>
             <Link href="/dashboard">
@@ -38,7 +38,7 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
       </nav>
       <main className="min-h-screen min-w-screen">{children}</main>
-      <footer className="bg-teal-500 text-white p-4 text-center">
+      <footer className="bg-blue-600 p-4 text-center">
         <p>
           &copy; {new Date().getFullYear()} Meu Site. Todos os direitos
           reservados.

@@ -10,7 +10,7 @@ const ProjectList: React.FC<{ endpoint: string }> = ({ endpoint }) => {
   if (loading) {
     return (
       <div className="text-center mt-4">
-        <p className="text-gray-600">Carregando...</p>
+        <p className="text-gray-600">Loading...</p>
       </div>
     );
   }
@@ -18,35 +18,32 @@ const ProjectList: React.FC<{ endpoint: string }> = ({ endpoint }) => {
   if (error) {
     return (
       <div className="text-center mt-4">
-        <p className="text-red-500">Erro: {error}</p>
+        <p className="text-red-500">Error: {error}</p>
       </div>
     );
   }
 
   return (
-    <div className="p-4 min-w-[300px] w-full bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4 text-center text-indigo-500">
+    <div className="p-4 min-w-[300px] w-full bg-gray-100 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-4 text-center text-purple-600">
         {formattedEndpoint} Projects
       </h2>
       <div className="grid grid-cols-1 gap-4">
         {projects && projects.length > 0 ? (
           projects.map((project) => (
-            <Link href={`/project/${project.id}`} >
-              <div
-                key={project.id}
-                className="mb-4 p-4 bg-indigo-200 rounded-lg shadow-md"
-              >
-                <p className="text-xl font-semibold mb-2">{project.name}</p>
+            <Link href={`/project/${project.id}`} key={project.id}>
+              <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer">
+                <p className="text-xl font-semibold mb-2 text-gray-800">
+                  {project.name}
+                </p>
                 <p className="text-gray-600">
-                  Progresso: {project.progress * 100}%
+                  Progress: {project.progress * 100}%
                 </p>
               </div>
             </Link>
           ))
         ) : (
-          <p className="text-gray-600 mt-2 text-center">
-            Nenhum projeto encontrado
-          </p>
+          <p className="text-gray-600 mt-2 text-center">No projects found</p>
         )}
       </div>
     </div>

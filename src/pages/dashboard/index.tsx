@@ -1,13 +1,11 @@
 import ProjectForm from "@/components/forms/ProjectForm";
-import Button from "@/components/layout/button";
+import TaskList from "@/components/lists/TaskList";
 import ProjectList from "@/components/lists/projectList";
-import TaskList from "@/components/lists/taskList";
-import Link from "next/link";
 
 export default function Dashboard() {
   return (
     <>
-      <div className="flex justify-around pt-2 gap-10">
+      <div className="flex justify-around p-6 gap-10">
         <div>
           <TaskList />
         </div>
@@ -16,7 +14,7 @@ export default function Dashboard() {
             <ProjectList endpoint="working" />
             <ProjectList endpoint="managing" />
           </div>
-            <ProjectForm />
+            {/* <ProjectForm /> */}
         </div>
       </div>
     </>
