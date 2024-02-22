@@ -39,7 +39,7 @@ const TaskList = () => {
   return (
     <div>
       <div className="container mx-auto p-4">
-        <h2 className="text-2xl font-bold mb-4 text-center text-purple-600">
+        <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">
           Your tasks
         </h2>
         {sortedTask && sortedTask.length > 0 ? (
