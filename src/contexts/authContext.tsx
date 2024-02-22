@@ -4,14 +4,6 @@ import Router from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import React, { ReactNode, createContext, useEffect, useState } from "react";
 
-type AuthContextData = {
-  user?: UserProps;
-  isAuthenticated: boolean;
-  signIn: (credentials: SignInProps) => Promise<void>;
-  signOut: () => void;
-  signUp: (credentials: SignUpProps) => Promise<void>;
-};
-
 export type UserProps = {
   id: number;
   name: string;
@@ -20,8 +12,14 @@ export type UserProps = {
   email: string;
 };
 
-type AuthProviderProps = {
-  children: ReactNode;
+type AuthContextData = {
+  user?: UserProps;
+  isAuthenticated: boolean;
+  signIn: (credentials: SignInProps) => Promise<void>;
+  signOut: () => void;
+  signUp: (credentials: SignUpProps) => Promise<void>;
+  error?: string;
+  loading: boolean;
 };
 
 type SignInProps = {
@@ -39,25 +37,23 @@ type SignUpProps = {
 
 export const AuthContext = createContext({} as AuthContextData);
 
-export function AuthProvider({ children }: AuthProviderProps) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserProps>();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchUserData = async () => {
     try {
       const response = await api.get("/user/me");
       const { id, name, surname, username, email } = response.data;
 
-      setUser({
-        id,
-        name,
-        surname,
-        username,
-        email,
-      });
+      setUser({ id, name, surname, username, email });
+      setError("");
+
     } catch (error) {
-      console.error("Erro ao obter informações do usuário:", error);
-      signOut(); // Se houver um erro, faça logout
+      console.error("Error fetching user information:", error);
+      signOut();
     }
   };
 
@@ -67,72 +63,83 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (token) {
       fetchUserData();
     } else {
-      signOut(); 
+      signOut();
     }
   }, []);
 
   async function signIn(data: SignInProps) {
-    // Faz a requisicao de login para o back-end
+    setLoading(true);
     try {
       const response = await api.post("/auth/login", {
         email: data.email,
         password: data.password,
       });
-
-      // Pega as constantes da resposta
       const { token } = response.data;
 
-      // Salva os cookies
       setCookie(undefined, "@nextauth.token", token, {
         maxAge: 60 * 60 * 24,
         path: "/",
       });
 
       setIsAuthenticated(true);
-
-      // Define o token como header padrao apos o login
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-      fetchUserData();
+      await fetchUserData();
+      
       Router.push("/dashboard");
     } catch (error: AxiosError | any) {
-      if (error.response) {
-        // O backend respondeu com um código de status diferente de 2xx
-        console.error("Erro:", error.response.data.message);
+      if (error.response.status === 401) {
+        setError("E-mail or password wrong");
       } else if (error.request) {
-        // Erro ao fazer a solicitação
-        console.error("Erro ao fazer a solicitação:", error.request);
+        setError("Error making request.");
       } else {
-        // Erro durante o processamento
-        console.error("Erro durante o processamento:", error.message);
+        setError("Error during processing.");
       }
+    } finally {
+      setLoading(false);
     }
   }
 
   async function signUp(data: SignUpProps) {
-    // Faz a requisicao de registro
+    setLoading(true);
     try {
-      const response = await api.post("/auth/register", {
+      if (
+        data.email === "" ||
+        data.password === "" ||
+        data.name === "" ||
+        data.surname === "" ||
+        data.confirmPassword === ""
+      ) {
+        setError("Please fill in all fields.");
+        return;
+      }
+
+      if (data.password !== data.confirmPassword) {
+        setError("Passwords do not match.");
+        return;
+      }
+
+      await api.post("/auth/register", {
         name: data.name,
         surname: data.surname,
         email: data.email,
         password: data.password,
         confirmPassword: data.confirmPassword,
       });
+      alert("Successfully registered");
+      setError("");
 
-      alert("Registrado com sucesso");
       Router.push("/login");
     } catch (error: AxiosError | any) {
       if (error.response) {
-        // O backend respondeu com um código de status diferente de 2xx
-        console.error("Erro:", error.response.data.message);
+        setError(error.response.data);
       } else if (error.request) {
-        // Erro ao fazer a solicitação
-        console.error("Erro ao fazer a solicitação:", error.request);
+        setError("Error making request.");
       } else {
-        // Erro durante o processamento
-        console.error("Erro durante o processamento:", error.message);
+        setError("Error during processing.");
       }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -142,14 +149,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setIsAuthenticated(false);
       setUser(undefined);
       Router.push("/login");
+      setError("")
     } catch {
-      console.log("Erro ao deslogar");
+      console.log("Error logging out");
     }
   }
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, signIn, signUp, signOut }}
+      value={{ user, isAuthenticated, signIn, signUp, signOut, error, loading }}
     >
       {children}
     </AuthContext.Provider>

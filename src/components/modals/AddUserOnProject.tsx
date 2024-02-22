@@ -1,39 +1,29 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { api } from "@/api/api";
+import useProject from "@/hooks/useProject";
 
 interface AddUserOnProjectProps {
   isOpen: boolean;
   onRequestClose: () => void;
-  path: string;
-  id: number;
+  projectId: number;
+  role: string;
 }
 
-const AddUserOnProject = ({
+const AddUserOnProjectModal = ({
   isOpen,
   onRequestClose,
-  path,
-  id,
+  projectId,
+  role,
 }: AddUserOnProjectProps) => {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { error, loading, handleAddUserToProject } = useProject();
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    try {
-      setLoading(true);
-      const response = await api.patch(`/project/${path}/${id}`, {
-        username: email,
-      });
-      setEmail("");
-      onRequestClose();
-    } catch (error: any) {
-      setErrorMessage(`Error: ${error.response.data}`);
-    } finally {
-      setLoading(false);
-    }
+    handleAddUserToProject(email, role, projectId);
+    onRequestClose();
+    setEmail("")
   };
 
   const customStyles = {
@@ -61,7 +51,7 @@ const AddUserOnProject = ({
       style={customStyles}
       contentLabel="Add User Modal"
     >
-      <div className="bg-white rounded-md p-8 mx-auto max-w-md">
+      <div className="bg-white  p-8 mx-auto max-w-md">
         <h2 className="text-2xl font-semibold mb-4">Add New User</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -74,14 +64,14 @@ const AddUserOnProject = ({
               placeholder="Type user e-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-4 py-2 mt-1 focus:outline-none focus:border-blue-500"
+              className="w-full border border-gray-300  px-4 py-2 mt-1 focus:outline-none focus:border-blue-500"
             />
           </div>
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className={`w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md focus:outline-none ${
+            className={`w-full bg-blue-500 text-white font-semibold py-2 px-4  focus:outline-none ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -93,4 +83,4 @@ const AddUserOnProject = ({
   );
 };
 
-export default AddUserOnProject;
+export default AddUserOnProjectModal;

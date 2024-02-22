@@ -10,7 +10,7 @@ const SearchUser = ({ users }: SearchUserProps) => {
   const [listOfUsers, setListOfUsers] = useState<UserProps[]>(users);
 
   return (
-    <div className="w-full mx-auto p-6 bg-white rounded-md shadow-md">
+    <div className="w-full mx-auto p-6 bg-white  shadow-md">
       <input
         type="text"
         placeholder="Digite o e-mail do usuário"
@@ -23,14 +23,14 @@ const SearchUser = ({ users }: SearchUserProps) => {
             )
           );
         }}
-        className="w-full p-3 border rounded-md mb-4 focus:outline-none focus:ring focus:border-blue-300"
+        className="w-full p-3 border  mb-4 focus:outline-none focus:ring focus:border-blue-300"
       />
 
       <div className="max-h-[300]">
         {listOfUsers.length > 0 ? (
           <div className="space-y-4">
             {listOfUsers.map((user) => (
-              <div key={user.id} className="bg-gray-200 p-3 rounded-md">
+              <div key={user.id} className="bg-gray-200 p-3 ">
                 {user.email}
               </div>
             ))}

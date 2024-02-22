@@ -1,4 +1,4 @@
-import { api } from "@/api/api";
+import useTask from "@/hooks/useTask";
 import { useState } from "react";
 import Modal from "react-modal";
 
@@ -8,14 +8,15 @@ interface AddTaskModalProps {
   id: number;
 }
 
+
+
 const AddTaskModal = ({ isOpen, onRequestClose, id }: AddTaskModalProps) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [taskPriority, setTaskPriority] = useState("");
   const [timeExpected, setTimeExpected] = useState("");
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { submitTaskCreateForm, error, loading } = useTask();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,36 +28,39 @@ const AddTaskModal = ({ isOpen, onRequestClose, id }: AddTaskModalProps) => {
       timeExpected,
     };
 
-    if (!name || !description || !taskPriority || !timeExpected) {
-      setError("Please fill out all fields!");
-      return;
-    }
+    await submitTaskCreateForm(taskData, id);
 
-    try {
-      setLoading(true);
-      const response = await api.post(`/task/create/${id}`, taskData);
-      setName("");
-      setDescription("");
-      setTaskPriority("");
-      setTimeExpected("");
-      setError("");
-      onRequestClose(); // Close modal on successful submission
-    } catch (error) {
-      setError("An error occurred while submitting the form.");
-    } finally {
-      setLoading(false);
-    }
+    setName("");
+    setDescription("");
+    setTaskPriority("");
+    setTimeExpected("");
+    onRequestClose();
+  };
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      border: "1px solid #ccc",
+      borderRadius: "5px",
+      background: "#fff",
+      padding: "20px",
+    },
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
-      overlayClassName="absolute inset-0 bg-black bg-opacity-50"
-    >
-      <div className="bg-white p-6 rounded-lg w-full max-w-md">
-        <h2 className="text-2xl mb-4 text-center font-bold text-blue-500">ADD NEW TASK</h2>
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
+      <div className="bg-white p-6 w-full max-w-md">
+        <h2 className="text-2xl mb-4 text-center font-bold text-blue-500">
+          ADD NEW TASK
+        </h2>
         <form onSubmit={handleSubmit}>
           <label className="block mb-4">
             <span className="text-gray-700">Name:</span>
@@ -64,7 +68,7 @@ const AddTaskModal = ({ isOpen, onRequestClose, id }: AddTaskModalProps) => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              className="mt-1 p-2 w-full border border-gray-300  focus:outline-none focus:border-blue-500"
             />
           </label>
           <label className="block mb-4">
@@ -72,7 +76,7 @@ const AddTaskModal = ({ isOpen, onRequestClose, id }: AddTaskModalProps) => {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              className="mt-1 p-2 w-full border border-gray-300  focus:outline-none focus:border-blue-500"
             />
           </label>
           <label className="block mb-4">
@@ -80,7 +84,7 @@ const AddTaskModal = ({ isOpen, onRequestClose, id }: AddTaskModalProps) => {
             <select
               value={taskPriority}
               onChange={(e) => setTaskPriority(e.target.value)}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              className="mt-1 p-2 w-full border border-gray-300  focus:outline-none focus:border-blue-500"
             >
               <option value="">Select Priority</option>
               <option value="LOW">Low</option>
@@ -95,12 +99,12 @@ const AddTaskModal = ({ isOpen, onRequestClose, id }: AddTaskModalProps) => {
               type="text"
               value={timeExpected}
               onChange={(e) => setTimeExpected(e.target.value)}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              className="mt-1 p-2 w-full border border-gray-300  focus:outline-none focus:border-blue-500"
             />
           </label>
           {error && <div className="text-red-500 mb-4">{error}</div>}
           <button
-            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+            className="w-full bg-blue-500 text-white p-2  hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
             disabled={loading}
           >
             {loading ? "Submitting..." : "Submit"}

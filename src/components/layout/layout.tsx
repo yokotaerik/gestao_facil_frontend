@@ -1,8 +1,8 @@
-// components/Layout.tsx
 import React, { ReactNode, useContext } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { AuthContext } from "@/contexts/authContext";
+import { FiLogOut, FiUser, FiGrid, FiFilePlus } from "react-icons/fi";
 
 type LayoutProps = {
   children: ReactNode;
@@ -12,38 +12,45 @@ const Layout = ({ children }: LayoutProps) => {
   const { user, signOut } = useContext(AuthContext);
 
   return (
-    <div className="flex flex-col min-h-screen font-sans bg-gray-200">
+    <div className="flex flex-col min-h-screen font-sans bg-gradient-to-t from-white to-slate-200">
       <Head>
-        <title>Meu Site</title>
+        <title>Manage your project!</title>
       </Head>
-      <nav className="bg-blue-600 text-white p-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <Link href="/dashboard">
-              <p className="text-lg font-bold hover:underline">Dashboard</p>
-            </Link>
-          </div>
-          <div className="flex space-x-4">
-            {user != null ? (
-              <div className="flex gap-2">
-                <label>{user.name} {user.surname}</label>
-                <button onClick={signOut}> Sair </button>
-              </div>
-            ) : (
-              <Link href="/login">
-                <p className="hover:underline">Entrar</p>
+      <nav className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4">
+        {user ? (
+          <div className="container mx-auto flex justify-between items-center">
+            <div className="flex items-center space-x-4">
+              <Link href="/dashboard">
+                <p className="text-lg font-bold flex items-center">
+                  <FiGrid className="mr-2" /> Dashboard
+                </p>
               </Link>
-            )}
+              <Link href="/create_project">
+                <p className="text-lg font-bold flex items-center">
+                  <FiFilePlus className="mr-2" /> Create a new project!
+                </p>
+              </Link>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-lg font-semibold">
+                Hi, {user.name} {user.surname}!
+              </span>
+              <button
+                className="flex items-center text-sm font-medium"
+                onClick={signOut}
+                title="Sign Out"
+              >
+                <FiLogOut className="mr-1 text-2xl" />
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex justify-center">
+            <h1 className="font-bold text-xl"> Easy project </h1>
+          </div>
+        )}
       </nav>
-      <main className="min-h-screen min-w-screen">{children}</main>
-      <footer className="bg-blue-600 p-4 text-center">
-        <p>
-          &copy; {new Date().getFullYear()} Meu Site. Todos os direitos
-          reservados.
-        </p>
-      </footer>
+      <main className="container mx-auto flex-1">{children}</main>
     </div>
   );
 };

@@ -1,9 +1,18 @@
-import React from "react";
-import useProjectList from "@/hooks/useProjectList";
+import React, { useEffect } from "react";
 import Link from "next/link";
+import useProject from "@/hooks/useProject";
 
-const ProjectList: React.FC<{ endpoint: string }> = ({ endpoint }) => {
-  const { projects, error, loading } = useProjectList(`/project/${endpoint}`);
+interface ProjectListProps {
+  endpoint: string;
+}
+
+const ProjectList = ({ endpoint }: ProjectListProps) => {
+  const { projects, error, loading, fetchProjectListData } = useProject();
+
+  useEffect(() => {
+    fetchProjectListData(`/project/${endpoint}`);
+  }, [endpoint]);
+
   const formattedEndpoint =
     endpoint.charAt(0).toUpperCase() + endpoint.slice(1);
 
@@ -24,22 +33,24 @@ const ProjectList: React.FC<{ endpoint: string }> = ({ endpoint }) => {
   }
 
   return (
-    <div className="p-4 min-w-[300px] w-full bg-gray-100 rounded-lg shadow-md">
+    <div className="w-full p-4">
       <h2 className="text-2xl font-bold mb-4 text-center text-purple-600">
-        {formattedEndpoint} Projects
+        {formattedEndpoint} projects
       </h2>
-      <div className="grid grid-cols-1 gap-4">
+      <div className="flex flex-col">
         {projects && projects.length > 0 ? (
           projects.map((project) => (
             <Link href={`/project/${project.id}`} key={project.id}>
-              <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer">
-                <p className="text-xl font-semibold mb-2 text-gray-800">
-                  {project.name}
-                </p>
-                <p className="text-gray-600">
-                  Progress: {project.progress * 100}%
-                </p>
-              </div>
+              <p className="block mb-4">
+                <div className="bg-white shadow-md p-4 hover:shadow-lg transition duration-300 cursor-pointer">
+                  <p className="text-xl font-semibold mb-2 text-gray-800">
+                    {project.name}
+                  </p>
+                  <p className="text-gray-600">
+                    Progress: {Math.round(project.progress * 100)}%
+                  </p>
+                </div>
+              </p>
             </Link>
           ))
         ) : (
