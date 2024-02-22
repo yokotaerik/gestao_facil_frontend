@@ -16,7 +16,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Head>
         <title>Manage your project!</title>
       </Head>
-      <nav className="bg-gradient-to-r from-blue-600 to-blue-300 text-white p-4">
+      <nav className="bg-gradient-to-r from-blue-900 to-blue-600 text-white p-4">
         {user ? (
           <div className="container mx-auto flex justify-between items-center">
             <div className="flex items-center space-x-4">

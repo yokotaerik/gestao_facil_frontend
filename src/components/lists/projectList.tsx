@@ -34,7 +34,7 @@ const ProjectList = ({ endpoint }: ProjectListProps) => {
 
   return (
     <div className="w-full p-4">
-      <h2 className="text-2xl font-bold mb-4 text-center text-purple-600">
+      <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">
         {formattedEndpoint} projects
       </h2>
       <div className="flex flex-col">
