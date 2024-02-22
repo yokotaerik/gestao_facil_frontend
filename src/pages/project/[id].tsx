@@ -27,13 +27,11 @@ const ProjectPage = () => {
 
   return (
     <div className="p-4 lg:p-10 flex flex-col gap-4">
-      <div className="w-full">
       <ProjectCard
         project={project as ProjectDataDTO}
         error={error}
         loading={loading}
       />
-      </div>
 
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="w-full lg:w-4/6">

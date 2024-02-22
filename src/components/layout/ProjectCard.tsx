@@ -40,8 +40,8 @@ const ProjectCard = ({ project, error, loading }: ProjectCardProps) => {
 
   if (loading) {
     return (
-      <div className="max-w-md mx-auto p-4 bg-white shadow-md text-center mt-4 text-gray-600">
-        Carregando...
+      <div className="max-w-md mx-auto p-4 bg-white shadow-md text-center mt-4 text-blue-600 text-2xl">
+        Loading...
       </div>
     );
   }
@@ -49,7 +49,7 @@ const ProjectCard = ({ project, error, loading }: ProjectCardProps) => {
   if (error) {
     return (
       <div className="max-w-md mx-auto p-4 bg-white shadow-md text-center mt-4 text-red-500">
-        Erro: {error}
+        Error: {error}
       </div>
     );
   }
@@ -59,15 +59,15 @@ const ProjectCard = ({ project, error, loading }: ProjectCardProps) => {
     const formattedCreatedAt = new Date(project.createdAt).toLocaleDateString();
 
     return (
-      <div className="bg-white shadow-md m-4 w-full ">
-        <div className="p-4 border-b border-gray-200 flex justify-between">
+      <div className="bg-white shadow-md m-4 lg:m-0 lg:ml-4">
+        <div className="p-4 border-b border-gray-200 flex flex-col lg:flex-row gap-2 justify-between">
           <h2 className="text-3xl font-semibold text-gray-800">
             {project.name}
           </h2>
           <div className="flex items-center gap-4">
             <Link href={`/edit_project/${project.id}`}>
               <button className="mt-2">
-                <FiPenTool className="text-blue-500 cursor-pointer" size={20}/>
+                <FiPenTool className="text-blue-500 cursor-pointer" size={20} />
               </button>
             </Link>
             <button onClick={openModal}>
@@ -79,7 +79,7 @@ const ProjectCard = ({ project, error, loading }: ProjectCardProps) => {
           <p className="text-gray-600">{project.description}</p>
           <div className="flex flex-wrap gap-4">
             <div className="w-full md:w-1/2">
-              <p className="text-gray-700 font-semibold">Progress:</p>
+              <p className="text-gray-700 font-semibold mb-2">Progress:</p>
               <div className="bg-gray-300 h-6 rounded-full overflow-hidden">
                 <div
                   className="bg-blue-500 h-full"

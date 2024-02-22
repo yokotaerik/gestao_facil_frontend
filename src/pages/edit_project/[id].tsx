@@ -45,11 +45,11 @@ const EditProjectPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleEditProject(Number(id), projectData)
+    handleEditProject(Number(id), projectData);
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
+    <div className="max-w-md mx-auto mt-10 bg-white p-10 shadow-md">
       <h1 className="text-2xl font-bold mb-4">Edit project</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -101,7 +101,7 @@ const EditProjectPage = () => {
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2  hover:bg-blue-600 transition duration-300"
+          className="bg-blue-500 text-white px-4 py-2  hover:bg-blue-600 transition duration-300 w-full"
         >
           Save
         </button>

@@ -116,7 +116,7 @@ const useProject = () => {
       setLoading(true);
 
       const response = await api.post("/project/create", data);
-      alert("Project created!");
+      toast.success("Project created!");
       const projectId = response.data;
       Router.push(`/project/${projectId}`);
     } catch (error) {
