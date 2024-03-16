@@ -1,41 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Documentação do Projeto: Sistema de Gestão de Projetos
 
-## Getting Started
+## Introdução
+O Sistema de Gestão de Projetos é uma aplicação web projetada para facilitar a criação, organização e distribuição de tarefas em projetos. Ele permite aos gestores criar projetos, adicionar funcionários e gestores, atribuir tarefas aos funcionários e monitorar o progresso do projeto.
 
-First, run the development server:
+## Objetivo
+O objetivo deste sistema é otimizar a gestão de projetos, melhorando a distribuição de tarefas entre os funcionários e permitindo uma visão clara do progresso do projeto para todas as partes envolvidas.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Funcionalidades
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. Gestão de Projetos
+- **Criar Projeto:** Os gestores podem criar novos projetos especificando seu nome, descrição e prazo.
+- **Editar Projeto:** Os gestores têm a capacidade de editar as informações do projeto, como nome, descrição e prazo.
+- **Excluir Projeto:** Os gestores podem excluir projetos que não são mais necessários.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### 2. Gestão de Pessoal
+- **Adicionar Funcionários:** Os gestores podem adicionar novos funcionários ao sistema, especificando seu nome, cargo e habilidades.
+- **Adicionar Gestores:** Além dos funcionários regulares, os gestores podem designar outros usuários como gestores, dando-lhes permissões adicionais para gerenciar projetos e atribuir tarefas.
+- **Editar Informações de Funcionários:** Os gestores podem editar as informações dos funcionários, como nome, cargo e habilidades.
+- **Remover Funcionários:** Os gestores podem remover funcionários do sistema.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### 3. Gestão de Tarefas
+- **Adicionar Tarefas:** Os gestores podem adicionar novas tarefas aos projetos, especificando seu nome, descrição, prazo e complexidade.
+- **Atribuir Tarefas:** Os gestores podem atribuir tarefas aos funcionários disponíveis, levando em consideração suas habilidades e carga de trabalho atual.
+- **Editar Tarefas:** Os gestores têm a capacidade de editar as informações das tarefas, como nome, descrição, prazo e responsável.
+- **Remover Tarefas:** Os gestores podem remover tarefas do projeto quando necessário.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### 4. Monitoramento de Progresso
+- **Visualizar Progresso:** Funcionários e gestores podem visualizar o progresso geral do projeto e o status de cada tarefa atribuída.
+- **Atualizar Status:** Os funcionários podem atualizar o status de suas tarefas conforme avançam no trabalho.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Tecnologias Utilizadas
+- **Backend:** Java com Spring Framework
+- **Banco de Dados:** MySQL
+- **Autenticação:** JSON Web Tokens (JWT)
 
-## Learn More
+## Considerações de Segurança
+- Todos os dados confidenciais são armazenados de forma segura no banco de dados, utilizando técnicas de criptografia, se necessário.
+- A autenticação é necessária para acessar as funcionalidades do sistema, garantindo que apenas usuários autorizados possam interagir com os projetos e tarefas.
+- As permissões de acesso são cuidadosamente gerenciadas para garantir que cada usuário tenha acesso apenas às funcionalidades e informações relevantes ao seu papel.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-"# gestao_facil_frontend" 
+## Considerações Finais
+O Sistema de Gestão de Projetos foi projetado para oferecer uma solução abrangente e intuitiva para a gestão eficiente de projetos. Com sua interface fácil de usar e conjunto robusto de funcionalidades, ele visa melhorar a colaboração entre os membros da equipe, aumentar a transparência do projeto e garantir o cumprimento dos prazos.
